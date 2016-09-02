@@ -1,0 +1,27 @@
+# set wd and download data
+setwd("~/Training/R/exploratory/week1/project")
+fileURL<-"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+if (!file.exists('./household_power_consumption.zip')){
+  download.file(fileURL,'./household_power_consumption.zip', mode = 'wb')
+  unzip("household_power_consumption.zip")
+}
+
+#read data
+
+house_power <- read.table('./household_power_consumption.txt', header=TRUE, sep=";", stringsAsFactors=FALSE, dec=".")
+
+#subset data
+
+sub_house_power <- house_power[house_power$Date %in% c("1/2/2007","2/2/2007") ,]
+
+#create global active power based on subset
+
+global_active_power <- as.numeric(sub_house_power$Global_active_power)
+
+#create png
+
+png("plot1.png", width=480, height=480)
+hist(global_active_power, col="red", main="Global Active Power", xlab="Global Active Power (kilowatts)", ylab="Frequency")
+dev.off()
+
+
